@@ -19,15 +19,17 @@ Make sure you have installed the Android SDK
 
 Then remove and reinstall platform with 
 ```
-ionic platform remove android
 ionic platform add android
+ionic plugin add cordova-plugin-camera
+npm install --save @ionic-native/camera
 ```
 or make sure you have installed Xcode
 
 **Only** if your are on iOS
 ```
-ionic platform remove ios
 ionic platform add ios
+ionic plugin add cordova-plugin-camera
+npm install --save @ionic-native/camera
 ```
 
 You should also have these Firebase rules, **for test purposes only dont go into production with these rules** :
