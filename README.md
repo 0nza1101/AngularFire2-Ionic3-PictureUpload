@@ -1,6 +1,8 @@
 Simple app exemple showing how to upload image from gallery or from camera to Firebase.
 
-![](https://media.giphy.com/media/3oKIPEm4KNyxjrCZMc/giphy.gif)
+<p align="center">
+  <img src="" />
+</p>
 
 If you want test the project first type :
 ```
