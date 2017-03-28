@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      FirebaseCameraApp
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <button ion-button icon-right color="dark" (click)="changePicture()">
+    Upload picture
+    <ion-icon name="images"></ion-icon>
+  </button>
+  <button ion-button icon-right color="secondary" (click)="refreshPicture()">
+    Retrieve
+    <ion-icon name="cloud-download"></ion-icon>
+  </button>
+  <!--Useless ^^ -->
+  <div *ngIf="userAvatarPicture[0]">
+    <!--Loop trough picture array here we use preserveSnapshot:true but I think we can also use async pipe with FirebaseListObservable-->
+    <div *ngFor="let picture of userAvatarPicture;let i = index;">
+      {{i+1}}
+      <img src="{{picture}}" />
+    </div>
+  </div>
+</ion-content>

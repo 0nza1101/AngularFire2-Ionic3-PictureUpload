@@ -1,0 +1,53 @@
+{
+  "name": "ionic-hello-world",
+  "author": "Ionic Framework",
+  "homepage": "http://ionicframework.com/",
+  "private": true,
+  "scripts": {
+    "build": "ionic-app-scripts build",
+    "watch": "ionic-app-scripts watch",
+    "serve:before": "watch",
+    "emulate:before": "watch",
+    "deploy:before": "build",
+    "build:before": "build",
+    "run:before": "watch"
+  },
+  "dependencies": {
+    "@angular/common": "2.4.8",
+    "@angular/compiler": "2.4.8",
+    "@angular/compiler-cli": "2.4.8",
+    "@angular/core": "2.4.8",
+    "@angular/forms": "2.4.8",
+    "@angular/http": "2.4.8",
+    "@angular/platform-browser": "2.4.8",
+    "@angular/platform-browser-dynamic": "2.4.8",
+    "@angular/platform-server": "2.4.8",
+    "@ionic-native/camera": "^3.4.2",
+    "@ionic-native/core": "3.1.0",
+    "@ionic-native/splash-screen": "3.1.0",
+    "@ionic-native/status-bar": "3.1.0",
+    "@ionic/storage": "2.0.0",
+    "angularfire2": "^2.0.0-beta.8",
+    "firebase": "^3.7.3",
+    "ionic-angular": "2.3.0",
+    "ionic-native": "^2.9.0",
+    "ionicons": "3.0.0",
+    "rxjs": "5.0.1",
+    "sw-toolbox": "3.4.0",
+    "zone.js": "0.7.2"
+  },
+  "devDependencies": {
+    "@ionic/app-scripts": "1.2.2",
+    "typescript": "2.0.9"
+  },
+  "cordovaPlugins": [
+    "cordova-plugin-console",
+    "cordova-plugin-whitelist",
+    "cordova-plugin-statusbar",
+    "cordova-plugin-device",
+    "cordova-plugin-splashscreen",
+    "ionic-plugin-keyboard"
+  ],
+  "cordovaPlatforms": [],
+  "description": "cameraApp: An Ionic project"
+}
