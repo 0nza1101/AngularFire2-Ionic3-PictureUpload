@@ -1,4 +1,4 @@
-# firebaseCameraApp
+
 
 Simple app exemple showing how to upload image from gallery or from camera to Firebase.
 
