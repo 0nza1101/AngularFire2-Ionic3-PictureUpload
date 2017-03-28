@@ -1,5 +1,7 @@
 
 
+![](https://media.giphy.com/media/3oKIPEm4KNyxjrCZMc/giphy.gif)
+
 Simple app exemple showing how to upload image from gallery or from camera to Firebase.
 
 If you want test the project first type :
