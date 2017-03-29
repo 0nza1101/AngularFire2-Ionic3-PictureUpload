@@ -1,7 +1,7 @@
 Simple app exemple showing how to upload image from gallery or from camera to Firebase.
 
 <p align="center">
-  <img src="https://gifyu.com/images/AngularFire2-Ionic2-PictureUpload2.md.gif" />
+  <img src="https://j.gifs.com/Y693g0.gif" />
 </p>
 
 If you want test the project first type :
