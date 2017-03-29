@@ -19,7 +19,7 @@ npm install
 ```  
 Make sure you have installed the Android SDK 
 
-Then remove and reinstall platform with 
+Then install platform with 
 ```
 ionic platform add android
 ionic plugin add cordova-plugin-camera
