@@ -55,3 +55,5 @@ You should also have these Firebase rules, **for test purposes only dont go into
         }
       }
     }
+
+They mean you can push data to firebase database without being logged in.
