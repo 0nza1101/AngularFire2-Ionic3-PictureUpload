@@ -1,4 +1,4 @@
-Simple app exemple showing how to upload image from gallery or from camera to Firebase.
+Simple app exemple showing how to upload image from gallery or from camera to Firebase with AngularFire2-rc4 and Ionic 3.
 
 <p align="center">
   <img src="https://j.gifs.com/Y693g0.gif" />
