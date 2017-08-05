@@ -1,11 +1,17 @@
+import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
+import { HttpModule } from '@angular/http';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
+
 import { AngularFireModule } from 'angularfire2';
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+
 import { PictureUtils } from '../services/pictureUtils.service';
+import { Camera } from '@ionic-native/camera';
+
 // Must export the config
 export const firebaseConfig = {
   apiKey: 'YOUR_API_KEY',
@@ -20,7 +26,11 @@ export const firebaseConfig = {
     HomePage
   ],
   imports: [
+    BrowserModule,
+    HttpModule,
     AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireDatabaseModule, // imports firebase/database, only needed for database features
+    AngularFireAuthModule, // imports firebase/auth, only needed for auth features
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
@@ -29,9 +39,8 @@ export const firebaseConfig = {
     HomePage
   ],
   providers: [
-    StatusBar,
-    SplashScreen,
     PictureUtils,
+    Camera,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Platform, ActionSheetController, ToastController } from 'ionic-angular';
-import { AngularFire, FirebaseListObservable} from 'angularfire2';
+import { AngularFireDatabase, FirebaseObjectObservable} from 'angularfire2/database';
 
 import { PictureUtils } from '../../services/pictureUtils.service';
 
@@ -10,13 +10,13 @@ import { PictureUtils } from '../../services/pictureUtils.service';
 })
 export class HomePage {
 
-  userAvatarPicture: Array<any> = new Array;//User picture array because of random name
-  constructor(public platform: Platform, public af: AngularFire, public actionSheetCtrl: ActionSheetController, private pictureUtils: PictureUtils) {
+  userAvatarPicture: Array<any> = new Array;//User picture array bcz we got random pic name
+  constructor(public platform: Platform, public afDB: AngularFireDatabase, public actionSheetCtrl: ActionSheetController, private pictureUtils: PictureUtils) {
 
   }
 
   refreshPicture() {
-    this.af.database.list('TEST/avatar/', { preserveSnapshot: true }).subscribe((snapshots: any) => {
+    this.afDB.list('TEST/avatar/', { preserveSnapshot: true }).subscribe((snapshots: any) => {
       snapshots.forEach((snapshot, index) => {
         this.userAvatarPicture[index] = snapshot.val();
       });

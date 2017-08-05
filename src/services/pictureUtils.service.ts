@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
-import { AngularFire, FirebaseObjectObservable} from 'angularfire2';
+import { AngularFireDatabase, FirebaseObjectObservable} from 'angularfire2/database';
 import * as firebase from 'firebase';
 import { Camera } from 'ionic-native';
 
@@ -42,9 +42,9 @@ export class PictureUtils {
     encodingType: Camera.EncodingType.JPEG
   }
 
-  constructor(public af: AngularFire) {
+  constructor(public afDB: AngularFireDatabase) {
     this.storageAvatarRef = firebase.storage().ref().child('userPicture/');//Firebase storage main path
-    this.profilAvatarRef = firebase.database().ref().child('TEST/avatar/');//Firebase user database avatar path
+    this.profilAvatarRef = afDB.object('TEST/avatar/');//Firebase user database avatar path
   }
 
   //Take a picture and return a promise with the image data
