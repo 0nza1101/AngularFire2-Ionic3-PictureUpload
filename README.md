@@ -24,7 +24,7 @@ Then install platform with
 ```
 ionic cordova platform add android
 ```
-or make sure you have installed Xcode, if your are on iOS
+or make sure you have installed Xcode
 
 ```
 ionic cordova platform add ios
