@@ -22,10 +22,10 @@ Make sure you have installed the Android SDK
 
 Then install platform with
 ```
-ionic platform add android
+ionic cordova platform add android
 ```
 or make sure you have installed Xcode, if your are on iOS
 
 ```
-ionic platform add ios
+ionic cordova platform add ios
 ```
