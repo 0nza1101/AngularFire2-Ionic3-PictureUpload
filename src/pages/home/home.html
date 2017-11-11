@@ -15,12 +15,10 @@
     Retrieve
     <ion-icon name="cloud-download"></ion-icon>
   </button>
-  <!--Useless ^^ -->
-  <div *ngIf="userAvatarPicture[0]">
-    <!--Loop trough picture array here we use preserveSnapshot:true but I think we can also use async pipe with FirebaseListObservable-->
-    <div *ngFor="let picture of userAvatarPicture;let i = index;">
+    <div *ngFor="let picture of pictures;let i = index;">
       {{i+1}}
-      <img src="{{picture}}" />
+      {{picture.name}}
+      {{picture.lastUpdated}}
+      <img src="{{picture.URL}}" />
     </div>
-  </div>
 </ion-content>

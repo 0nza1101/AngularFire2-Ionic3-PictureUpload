@@ -1,4 +1,4 @@
-Simple app exemple showing how to upload image from gallery or from camera to Firebase with AngularFire2-rc4 and Ionic 3.
+Simple app exemple showing how to upload image from gallery or from camera to Firebase with Firebase, AngularFire2-rc4 and Ionic 3.
 
 <p align="center">
   <img src="https://j.gifs.com/Y693g0.gif" />
@@ -14,46 +14,18 @@ npm install
       apiKey: 'YOUR_API_KEY',
       authDomain: 'YOUR_DOMAIN',
       databaseURL: 'YOUR_DATABASE_URL',
-      storageBucket: 'YOUR_STORAGE'
+      storageBucket: 'YOUR_STORAGE',
+      messagingSenderId: "YOUR_MSGINGID"
     };
 ```  
-Make sure you have installed the Android SDK 
+Make sure you have installed the Android SDK
 
-Then install platform with 
+Then install platform with
 ```
 ionic platform add android
-ionic plugin add cordova-plugin-camera
-npm install --save @ionic-native/camera
 ```
-or make sure you have installed Xcode
+or make sure you have installed Xcode, if your are on iOS
 
-**Only** if your are on iOS
 ```
 ionic platform add ios
-ionic plugin add cordova-plugin-camera
-npm install --save @ionic-native/camera
 ```
-
-You should also have these Firebase rules, **for test purposes only dont go into production with these rules** :
-
-**Realtime database rules :**
-
-    {
-      "rules": {
-        ".read": true,
-        ".write": true
-      }
-    }
-
-
-**Storage rules :**
-
-    service firebase.storage {
-      match /b/XXXXXXXXX.appspot.com/o {
-        match /{allPaths=**} {
-          allow read, write;
-        }
-      }
-    }
-
-They mean you can push data to firebase database without being logged in.

@@ -1,96 +1,154 @@
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
-import { AngularFireDatabase, FirebaseObjectObservable} from 'angularfire2/database';
-import * as firebase from 'firebase';
-import { Camera } from 'ionic-native';
+import { AngularFireAuth } from 'angularfire2/auth'
+import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+import * as firebase from 'firebase/app';
+import 'firebase/storage';
+import { Camera, CameraOptions } from '@ionic-native/camera';
 
-/***
-    PictureUtils.ts a provider picture manipulating methods with :
-      - openCamera() return a promise with the image taken from the camera
-      - openGallery() return a promise with the image picked from the gallery
-      - uploadProfilPicture(imgData:any) upload to firebase storage current user picture
-***/
+declare var window: any;
 
 @Injectable()
 export class PictureUtils {
-  storageAvatarRef: any;
-  profilAvatarRef: any;
+  private basePath: string = '/avatarPicture';
   objectToSave: Array<any> = new Array;
 
-  takePictureOptions: any = {
-    allowEdit: true,
+  private takePictureOptions: CameraOptions = {
+    allowEdit: false,
     saveToPhotoAlbum: true,
     quality: 100,
     targetWidth: 720,
     targetHeight: 720,
-    cameraDirection: Camera.Direction.BACK,
-    sourceType: Camera.PictureSourceType.CAMERA,
-    mediaType: Camera.MediaType.PICTURE,
-    destinationType: Camera.DestinationType.DATA_URL,
-    encodingType: Camera.EncodingType.JPEG
+    cameraDirection: this.camera.Direction.BACK,
+    sourceType: this.camera.MediaType.PICTURE,
+    destinationType: this.camera.DestinationType.FILE_URI,
+    encodingType: this.camera.EncodingType.JPEG
   }
 
-  galleryOptions: any = {
-    allowEdit: true,
-    saveToPhotoAlbum: false,
-    quality: 100,
+  private galleryOptions: CameraOptions = {
+    destinationType: this.camera.DestinationType.FILE_URI,
+    sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
     targetWidth: 720,
     targetHeight: 720,
-    sourceType: Camera.PictureSourceType.SAVEDPHOTOALBUM,
-    mediaType: Camera.MediaType.PICTURE,
-    destinationType: Camera.DestinationType.DATA_URL,
-    encodingType: Camera.EncodingType.JPEG
+    correctOrientation: true
   }
 
-  constructor(public afDB: AngularFireDatabase) {
-    this.storageAvatarRef = firebase.storage().ref().child('userPicture/');//Firebase storage main path
-    this.profilAvatarRef = afDB.object('TEST/avatar/');//Firebase user database avatar path
+  constructor(
+    public afAuth: AngularFireAuth,
+    private afDB: AngularFireDatabase,
+    private camera: Camera) {
+
   }
 
   //Take a picture and return a promise with the image data
-  openCamera() {
-    return new Promise((resolve, reject) => {
-      Camera.getPicture(this.takePictureOptions).then((imageData) => {
-        return resolve(imageData);
-      }), (err) => {
-        console.log('Cant take the picture', err);
-        return reject(err);
-      }
+  uploadFromCamera() {
+    this.camera.getPicture(this.takePictureOptions).then((imagePath) => {
+      alert('got image path ' + imagePath);
+      return this.makeFileIntoBlob(imagePath);//convert picture to blob
+    }).then((imageBlob) => {
+      alert('got image blob ' + imageBlob);
+      return this.uploadToFirebase(imageBlob);//upload the blob
+    }).then((uploadSnapshot: any) => {
+      alert('file uploaded successfully  ' + uploadSnapshot.downloadURL);
+      return this.saveToDatabase(uploadSnapshot);//store reference to storage in database
+    }).then((_uploadSnapshot: any) => {
+      alert('file saved to asset catalog successfully  ');
+    }, (_error) => {
+      alert('Error ' + (_error.message || _error));
     });
   }
 
   //open the gallery and Return a promise with the image data
-  openGallery() {
-    return new Promise((resolve, reject) => {
-      Camera.getPicture(this.galleryOptions).then((imageData) => {
-        return resolve(imageData);
-      }), (err) => {
-        console.log('Cant access to gallery', err);
-        return reject(err);
-      }
+  uploadFromGallery() {
+    this.camera.getPicture(this.galleryOptions).then((imagePath) => {
+      alert('got image path ' + imagePath);
+      return this.makeFileIntoBlob(imagePath);//convert picture to blob
+    }).then((imageBlob) => {
+      alert('got image blob ' + imageBlob);
+      return this.uploadToFirebase(imageBlob);//upload the blob
+    }).then((uploadSnapshot: any) => {
+      alert('file uploaded successfully  ' + uploadSnapshot.downloadURL);
+      return this.saveToDatabase(uploadSnapshot);//store reference to storage in database
+    }).then((_uploadSnapshot: any) => {
+      alert('file saved to asset catalog successfully  ');
+    }, (_error) => {
+      alert('Error ' + (_error.message || _error));
     });
   }
 
-  //Upload a new profile picture to the firebase storage
-  uploadProfilPicture(imgData: any) {
+  makeFileIntoBlob(_imagePath) {
+    return new Promise((resolve, reject) => {
+      window.resolveLocalFileSystemURL(_imagePath, (fileEntry) => {
+
+        fileEntry.file((resFile) => {
+
+          var reader = new FileReader();
+          reader.onloadend = (evt: any) => {
+            var imgBlob: any = new Blob([evt.target.result], { type: 'image/jpeg' });
+            imgBlob.name = 'sample.jpg';
+            resolve(imgBlob);
+          };
+
+          reader.onerror = (e) => {
+            console.log('Failed file read: ' + e.toString());
+            reject(e);
+          };
+
+          reader.readAsArrayBuffer(resFile);
+        });
+      });
+    });
+  }
+
+  //Upload picture to the firebase storage
+  uploadToFirebase(imgBlob: any) {
     var randomNumber = Math.floor(Math.random() * 256);
     console.log('Random number : ' + randomNumber);
+    return new Promise((resolve, reject) => {
+      let storageRef = firebase.storage().ref(this.basePath + randomNumber + '.jpg');//Firebase storage main path
 
-    this.storageAvatarRef.child(randomNumber + '.jpg').putString(imgData, 'base64', { contentType: 'image/jpeg' }).then((savedPicture) => {
-      console.log('saved picture URL', savedPicture.downloadURL);
+      let metadata: firebase.storage.UploadMetadata = {
+        contentType: 'image/jpeg',
+      };
 
-      this.objectToSave.push(savedPicture.downloadURL);
-      console.log('objectToSave : ' + JSON.stringify(this.objectToSave));
-      this.profilAvatarRef.set(this.objectToSave);
+      let uploadTask = storageRef.put(imgBlob, metadata);
+      uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+        (snapshot) => {
+          // upload in progress
+          let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          console.log(progress);
+        },
+        (error) => {
+          // upload failed
+          console.log(error);
+          reject(error);
+        },
+        () => {
+          // upload success
+          let url = uploadTask.snapshot.downloadURL
+          console.log('Saved picture url', url);
+          resolve(uploadTask.snapshot);
+        });
     });
   }
 
-  //Delete avatar picture GIFT :)
-  deleteAvatar(imgIndex: string) {
-    this.storageAvatarRef.child(imgIndex + '.jpg').delete().then((success) => {
-      console.log('Deleted users avatar successfully', imgIndex);
-    }, (error) => {
-      console.error("Error deleting users avatar", imgIndex)
+  saveToDatabase(uploadSnapshot) {
+    var ref = firebase.database().ref('assets');
+
+    return new Promise((resolve, reject) => {
+
+      // we will save meta data of image in database
+      var dataToSave = {
+        'URL': uploadSnapshot.downloadURL, // url to access file
+        'name': uploadSnapshot.metadata.name, // name of the file
+        'lastUpdated': new Date().getTime(),
+      };
+
+      ref.push(dataToSave, (response) => {
+        resolve(response);
+      }).catch((error) => {
+        reject(error);
+      });
     });
   }
 

@@ -5,6 +5,7 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 
+import * as firebase from 'firebase';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
@@ -17,7 +18,8 @@ export const firebaseConfig = {
   apiKey: 'YOUR_API_KEY',
   authDomain: 'YOUR_DOMAIN',
   databaseURL: 'YOUR_DATABASE_URL',
-  storageBucket: 'YOUR_STORAGE'
+  storageBucket: 'YOUR_STORAGE',
+  messagingSenderId: "YOUR_MSGINGID"
 };
 
 @NgModule({
