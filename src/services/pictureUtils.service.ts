@@ -16,16 +16,15 @@ export class PictureUtils {
   private takePictureOptions: CameraOptions = {
     allowEdit: false,
     saveToPhotoAlbum: true,
-    quality: 100,
     targetWidth: 720,
     targetHeight: 720,
     cameraDirection: this.camera.Direction.BACK,
-    sourceType: this.camera.MediaType.PICTURE,
+    sourceType: this.camera.PictureSourceType.CAMERA,
     destinationType: this.camera.DestinationType.FILE_URI,
-    encodingType: this.camera.EncodingType.JPEG
   }
 
   private galleryOptions: CameraOptions = {
+    allowEdit: true,
     destinationType: this.camera.DestinationType.FILE_URI,
     sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
     targetWidth: 720,
