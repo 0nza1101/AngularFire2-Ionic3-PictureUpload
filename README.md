@@ -31,4 +31,4 @@ or make sure you have installed Xcode
 ionic cordova platform add ios
 ionic cordova run ios
 ```
-You need to turn on anonymous login in order to test it or change `firebase.auth().signInAnonymously()` from `src/pages/home/home.ts` to `firebase.auth().signInWithEmailAndPassword('newuser@mail.com', 'password')` or whatever signIn method you want.
+You need to turn on anonymous login in your Firebase console in order to test it or change `firebase.auth().signInAnonymously()` from `src/pages/home/home.ts` to `firebase.auth().signInWithEmailAndPassword('newuser@mail.com', 'password')` or whatever signIn method you want.
